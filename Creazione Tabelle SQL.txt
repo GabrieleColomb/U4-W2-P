@@ -1,0 +1,30 @@
+--Creazione delle tabelle
+
+CREATE TABLE ANAGRAFICA (
+idanagrafica INT IDENTITY PRIMARY KEY,
+Cognome VARCHAR(255) NOT NULL,
+Nome VARCHAR(255) NOT NULL,
+Indirizzo VARCHAR(255) NOT NULL,
+Città VARCHAR(255) NOT NULL,
+CAP VARCHAR(10) NOT NULL,
+Cod_Fisc VARCHAR(16) NOT NULL
+);
+
+CREATE TABLE TIPO_VIOLAZIONE (
+idviolazione INT IDENTITY PRIMARY KEY,
+descrizione VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE VERBALE (
+idverbale INT IDENTITY PRIMARY KEY,
+DataViolazione DATE NOT NULL,
+IndirizzoViolazione VARCHAR(255) NOT NULL,
+Nominativo_Agente VARCHAR(255) NOT NULL,
+DataTrascrizioneVerbale DATE NOT NULL,
+Importo MONEY NOT NULL,
+DecurtamentoPunti INT NOT NULL,
+idanagrafica INT NOT NULL,
+idviolazione INT NOT NULL,
+FOREIGN KEY (idanagrafica) REFERENCES ANAGRAFICA(idanagrafica),
+FOREIGN KEY (idviolazione) REFERENCES TIPO_VIOLAZIONE(idviolazione)
+);

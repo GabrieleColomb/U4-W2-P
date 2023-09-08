@@ -1,0 +1,58 @@
+--1) Conteggio dei verbali trascritti
+Select Count(*) As TotaleVerbali From VERBALE;
+
+--2) Conteggio dei verbali trascritti raggruppati per anagrafe
+Select a.Cognome, a.Nome, Count(v.idverbale) As TotaleVerbali
+From ANAGRAFICA a
+Left Join VERBALE v On a.idanagrafica = v.idanagrafica
+Group by a.Cognome, a.Nome;
+
+--3) Conteggio dei verbali trascritti raggruppati per tipo di violazione
+Select tv.descrizione, Count(v.idverbale) As TotaleVerbali
+From TIPO_VIOLAZIONE tv
+Left Join VERBALE v On tv.idviolazione = v.idviolazione
+Group by tv.descrizione;
+
+--4) Totale dei punti decurtati per ogni anagrafe
+Select a.Cognome, a.Nome, Sum(v.DecurtamentoPunti) As TotalePuntiDecurtati
+From ANAGRAFICA a
+Left Join VERBALE v On a.idanagrafica = v.idanagrafica
+Group by a.Cognome, a.Nome;
+
+--5) Cognome, Nome, Data violazione, Indirizzo violazione, importo e punti decurtati per tutti gli anagrafici residenti a Palermo
+Select a.Cognome, a.Nome, v.DataViolazione, v.IndirizzoViolazione, v.Importo, v.DecurtamentoPunti
+From ANAGRAFICA a
+Inner Join VERBALE v On a.idanagrafica = v.idanagrafica
+Where a.Città = 'Palermo';
+
+--6) Cognome, Nome, Indirizzo, Data violazione, importo e punti decurtati per le violazioni fatte tra il febbraio 2009 e luglio 2009
+Select a.Cognome, a.Nome, v.DataViolazione, v.IndirizzoViolazione, v.Importo, v.DecurtamentoPunti
+From ANAGRAFICA a
+Inner Join VERBALE v On a.idanagrafica = v.idanagrafica
+Where v.DataViolazione Between '2009-02-01' And '2009-07-31';
+
+--7) Totale degli importi per ogni anagrafico
+Select a.Cognome, a.Nome, Sum(v.Importo) As TotaleImporti
+From ANAGRAFICA a
+Inner Join VERBALE v On a.idanagrafica = v.idanagrafica
+Group by a.Cognome, a.Nome;
+
+--8) Visualizzazione di tutti gli anagrafici residenti a Palermo
+Select * From ANAGRAFICA Where Città = 'Palermo';
+
+--10) Conteggio delle violazioni contestate raggruppate per Nominativo dell’agente di Polizia
+Select Nominativo_Agente, Count(idverbale) As TotaleViolazioni
+From VERBALE
+Group by Nominativo_Agente;
+
+--11) Cognome, Nome, Indirizzo, Data violazione, Importo e punti decurtati per tutte le violazioni che superino il decurtamento di 5 punti
+Select a.Cognome, a.Nome, v.IndirizzoViolazione, v.DataViolazione, v.Importo, v.DecurtamentoPunti
+From ANAGRAFICA a
+Inner Join VERBALE v On a.idanagrafica = v.idanagrafica
+Where v.DecurtamentoPunti > 5;
+
+--12) Cognome, Nome, Indirizzo, Data violazione, Importo e punti decurtati per tutte le violazioni che superino l’importo di 400 euro
+Select a.Cognome, a.Nome, v.IndirizzoViolazione, v.DataViolazione, v.Importo, v.DecurtamentoPunti
+From ANAGRAFICA a
+Inner Join VERBALE v On a.idanagrafica = v.idanagrafica
+Where v.Importo > 400;
